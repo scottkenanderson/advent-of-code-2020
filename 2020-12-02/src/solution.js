@@ -13,13 +13,10 @@ class Policy {
   }
 
   isMetByPart2(password) {
-    const firstIndex = this.minOccurence-1;
-    const secondIndex = this.maxOccurrence-1;
-    const firstChar = password.charAt(firstIndex);
-    const secondChar = password.charAt(secondIndex);
-    const matches = [firstChar.match(new RegExp(this.character)) !== null, secondChar.match(new RegExp(this.character)) !== null];
-    const numMatches = matches.filter(x => !!x).length;
-    return numMatches === 1;
+    return [
+      password.charAt(this.minOccurence-1).match(new RegExp(this.character)) !== null, 
+      password.charAt(this.maxOccurrence-1).match(new RegExp(this.character)) !== null,
+    ].filter(x => !!x).length === 1;
   }
 }
 
@@ -28,16 +25,17 @@ const splitData = (element) => {
   return [ new Policy(policyString), password.trim() ];
 }
 
-const part1 = (input) => {
+const solve = (input, func) => {
   const data = input.map(x => splitData(x))
-  const matches = data.map(([policy, password]) => policy.isMetByPart1(password));
-  return matches.filter(x => !!x).length;
+  return data.map(func).filter(x => !!x).length;
+};
+
+const part1 = (input) => {
+  return solve(input, ([policy, password]) => policy.isMetByPart1(password));
 };
 
 const part2 = (input) => {
-  const data = input.map(x => splitData(x))
-  const matches = data.map(([policy, password]) => policy.isMetByPart2(password));
-  return matches.filter(x => !!x).length;
+  return solve(input, ([policy, password]) => policy.isMetByPart2(password));
 };
 
 module.exports = { part1, part2 };
