@@ -1,0 +1,28 @@
+{
+  "name": "2020-12-01",
+  "version": "1.0.0",
+  "description": "day 1 of AOC",
+  "main": "src/index.js",
+  "scripts": {
+    "solution": "node src/index.js",
+    "test": "jest",
+    "lint": "eslint src/*.js",
+    "lint:fix": "eslint --fix src/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottkenanderson/advent-of-code-2020.git"
+  },
+  "author": "Scott Anderson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottkenanderson/advent-of-code-2020/issues"
+  },
+  "homepage": "https://github.com/scottkenanderson/advent-of-code-2020#readme",
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "jest": "^24.0.0"
+  }
+}
