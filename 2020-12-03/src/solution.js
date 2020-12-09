@@ -1,43 +1,63 @@
-class Policy {
-  constructor(policyString) {
-    const [ occurrenceKey, character ] = policyString.split(' ');
-    const [ minOccurence, maxOccurrence ] = occurrenceKey.split('-').map((i) => parseInt(i, 10));
-    this.minOccurence = minOccurence;
-    this.maxOccurrence = maxOccurrence;
-    this.character = character;
+class Grid {
+  constructor(data) {
+    this.grid = data;
+    this.length = data.length;
+    this.width = data[0].length;
   }
 
-  isMetByPart1(password) {
-    const matches = (password.match(new RegExp(this.character, 'g')) || []).length;
-    return this.minOccurence <= matches && this.maxOccurrence >= matches;
-  }
-
-  isMetByPart2(password) {
-    const firstIndex = this.minOccurence-1;
-    const secondIndex = this.maxOccurrence-1;
-    const firstChar = password.charAt(firstIndex);
-    const secondChar = password.charAt(secondIndex);
-    const matches = [firstChar.match(new RegExp(this.character)) !== null, secondChar.match(new RegExp(this.character)) !== null];
-    const numMatches = matches.filter(x => !!x).length;
-    return numMatches === 1;
+  isTree(c) {
+    const character = this.grid[c.y][(c.x % this.width)];
+    return character === '#';
   }
 }
 
-const splitData = (row) => {
-  return row.split('');
+class Coordinates {
+  constructor(right, down) {
+    this.x = 0;
+    this.y = 0;
+    this.right = right;
+    this.down = down;
+  }
+
+  increment() {
+    this.x += this.right;
+    this.y += this.down;
+  }
 }
 
-const part1 = (input) => {
-  console.log(input)
-  const data = input.map(x => splitData(x))
-  const matches = data.map(([policy, password]) => policy.isMetByPart1(password));
-  return matches.filter(x => !!x).length;
+const splitData = row => row.split('');
+
+const toboggan = (grid, right, down) => {
+  const c = new Coordinates(right, down);
+  let trees = 0;
+
+  while (c.y < grid.length) {
+    if (grid.isTree(c)) {
+      trees += 1;
+    }
+    c.increment();
+  }
+  return trees;
 };
 
+const makeGrid = input => (
+  new Grid(input.map(x => splitData(x)))
+);
+
+const product = (acc, i) => acc * i;
+
+const part1 = input => toboggan(makeGrid(input), 3, 1);
+
 const part2 = (input) => {
-  const data = input.map(x => splitData(x))
-  const matches = data.map(([policy, password]) => policy.isMetByPart2(password));
-  return matches.filter(x => !!x).length;
+  const grid = makeGrid(input);
+  const slopes = [
+    [1, 1],
+    [3, 1],
+    [5, 1],
+    [7, 1],
+    [1, 2],
+  ];
+  return slopes.map(([right, down]) => toboggan(grid, right, down)).reduce(product);
 };
 
 module.exports = { part1, part2 };

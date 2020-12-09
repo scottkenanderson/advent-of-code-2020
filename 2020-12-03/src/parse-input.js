@@ -1,3 +1,3 @@
-const parseInput = (input) => input.split('\n');
+const parseInput = input => input.split('\n');
 
 module.exports = { parseInput };
