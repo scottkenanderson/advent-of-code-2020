@@ -44,8 +44,10 @@ const parseBoardingPass = (boardingPass) => {
 };
 
 const getSeatIds = (input) => {
-  const solution = input.map(parseBoardingPass);
-  return solution.map((x) => parseInt(x.seatId, 10));
+  return input.map((x) => {
+    const { seatId } = parseBoardingPass(x);
+    return parseInt(seatId, 10);
+  });
 };
 
 const part1 = (input) => getSeatIds(input).reduce((acc, i) => (i > acc ? i : acc));
